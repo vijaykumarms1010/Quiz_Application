@@ -1,0 +1,151 @@
+{% include "layout.html" %}
+
+
+{% block body %}
+<div class="container">
+   <div class="row">
+      <div class="col md-12">
+         <h2>Question List<button type="button" class="btn btn-success  pull-right" data-toggle="modal"
+               data-target="#myModal">Add Question</button></h2>
+         {%with messages = get_flashed_messages()%}
+         {%if messages%}
+         {% for message in messages %}
+         <div class="alert alert-success alert-dismissable" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+            {{message}}
+         </div>
+         {%endfor%}
+         {%endif%}
+         {%endwith%}
+
+         <table class="table table-striped">
+            <tr>
+               <th>Serial</th>
+               <th>Question</th>
+               <th>Answer</th>
+               <th>Option1</th>
+               <th>Option2</th>
+               <th>Option3</th>
+               <th>Option4</th>
+
+            </tr>
+
+            {% for row in students %}
+            <tr>
+               <td>{{row.id}}</td>
+               <td>{{row.ques}}</td>
+               <td>{{row.answer}}</td>
+               <td>{{row.option1}}</td>
+               <td>{{row.option2}}</td>
+               <td>{{row.option3}}</td>
+               <td>{{row.option4}}</td>
+               <td>
+                  <a href="/update/{{row.id}}" class="btn btn-warning btn-xs" data-toggle="modal"
+                     data-target="#modaledit{{row.id}}">Edit</a>
+                  <a href="/delete/{{ row.id }}" class="btn btn-danger btn-xs"
+                     onclick="return confirm('Are You Sure For Delete?')">Delete</a>
+               </td>
+            </tr>
+
+            <div id="modaledit{{row.id}}" class="modal fade" role="dialog">
+               <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Update Question</h4>
+                     </div>
+                     <div class="modal-body">
+                        <form action="{{ url_for('update') }}" method="POST">
+                           <div class="form-group">
+                              <label>Question:</label>
+                              <input type="hidden" name="id" value="{{row.id}}">
+                              <input type="text" class="form-control" name="question" value="{{row.ques}}">
+                           </div>
+                           <div class="form-group">
+                              <label>Answer:</label>
+                              <input type="text" class="form-control" name="answer" value="{{row.answer}}">
+                           </div>
+                           <div class="form-group">
+                              <label>Option1</label>
+                              <input type="text" class="form-control" name="option1" value="{{row.option1}}">
+                           </div>
+                           <div class="form-group">
+                              <label>Option2</label>
+                              <input type="text" class="form-control" name="option2" value="{{row.option2}}">
+                           </div>
+                           <div class="form-group">
+                              <label>Option3</label>
+                              <input type="text" class="form-control" name="option3" value="{{row.option3}}">
+                           </div>
+                           <div class="form-group">
+                              <label>Option4</label>
+                              <input type="text" class="form-control" name="option4" value="{{row.option4}}">
+                           </div>
+                           <div class="form-group">
+                              <button class="btn btn-primary" type="sbumit">Update</button>
+                           </div>
+                        </form>
+                     </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+            </tbody>
+         </table>
+      </div>
+
+      <!-- Modal -->
+      <div id="myModal" class="modal fade" role="dialog">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Please Insert Data</h4>
+               </div>
+               <div class="modal-body">
+                  <form action="{{ url_for('insert') }}" method="POST">
+                     <div class="form-group">
+                        <label>Question:</label>
+                        <input type="text" class="form-control" name="question" required="1">
+                     </div>
+                     <div class="form-group">
+                        <label>Answer:</label>
+                        <input type="text" class="form-control" name="answer" required="1">
+                     </div>
+                     <div class="form-group">
+                     <label>Option1</label>
+                     <input type="text" class="form-control" name="option1" required="1">
+                  </div>
+                  <div class="form-group">
+                     <label>Option2</label>
+                     <input type="text" class="form-control" name="option2" required="1">
+                  </div>
+                  <div class="form-group">
+                     <label>Option3</label>
+                     <input type="text" class="form-control" name="option3" required="1">
+                  </div>
+                  <div class="form-group">
+                     <label>Option4</label>
+                     <input type="text" class="form-control" name="option4" required="1">
+                  </div>
+                        <div class="form-group">
+                           <button class="btn btn-primary" type="submit">Insert Data</button>
+                        </div>
+                  </form>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+   </div>
+</div>
+{% endblock %}
+

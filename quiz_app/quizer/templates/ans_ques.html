@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block content %}
+{% set var = '1' %}
+<div class="container">
+    
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+function changeQueryString(searchString){      
+    var url = window.location.href;       
+    var urlSplit = url.split( "?" );       
+    var obj = { Title : "New title", Url: urlSplit[0] + `?id=${searchString}`};       
+    history.pushState(obj, obj.Title, obj.Url);  
+}
+ $(document).ready(function(){
+        var divs = $('.divs>div');
+        var now =0
+        divs.hide().first().show(); // hide all divs except first
+        $("button[name=next]").click(function() {
+            divs.eq(now).hide();
+            now = (now + 1 < divs.length) ? now + 1 : 0;
+            divs.eq(now).show(); // show next
+            var p = divs.eq(now)[0].innerText.split(' ')[1]
+            changeQueryString(p)
+        });
+        });
+
+</script>
+
+    {%for i in questions %}
+    <div class="divs">
+        <div>Question:  {{i.id}} {{i.ques}}
+            <form method="POST">
+                <div class="form-group">
+                    <label for="option1">{{i.option1}}</label>
+                    <input id="option1" type="checkbox" name="option1" class="form-control" placeholder="option1">
+                </div>
+                <div class="form-group">
+                    <label for="option2">{{i.option2}}</label>
+                    <input id="option2" type="checkbox" name="option2" class="form-control" placeholder="option2" >
+                </div>
+                <div class="form-group">
+                    <label for="option3">{{i.option3}}</label>
+                    <input id="option3" type="checkbox" name="option3" class="form-control" placeholder="option3" >
+                </div>
+                <div class="form-group">
+                    <label for="option4">{{i.option4}}</label>
+                    <input id="option4" type="checkbox" name="option4" class="form-control" placeholder="option4" >
+                </div>                
+            <button class="btn btn-primary" type="submit" >submit</button>
+            </form>
+        </div>
+    </div>
+  
+    </div>
+    {% endfor %}
+    <button name="next" class="btn btn-primary">Next</button>
+    {%with messages = get_flashed_messages()%}
+         {%if messages%}
+         {% for message in messages %}
+         <div class="alert alert-success alert-dismissable" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+            {{message}}
+         </div>
+         {%endfor%}
+         {%endif%}
+         {%endwith%}
+    <!-- <form method="POST">
+        <div class="form-group">
+            <input type="text" name="answer" class="form-control" placeholder="answer" required>
+        </div>
+    <button class="btn btn-primary" type="submit" >submit</button>
+    </form> -->
+
+{% endblock content %}
